@@ -11,11 +11,7 @@ REM *                                              *
 REM ************************************************
 
 
-REM Open maximized window
-IF NOT "%1" == "max" (
-	START /MAX CMD /c %0 max
-	EXIT /b
-) 
+ 
 
 REM Set color inot bright white
 COLOR F
@@ -28,17 +24,11 @@ REM Author
 	CALL :SetColor 03 "Artisan Shortener v0.1 by M.Rakhisi "
 	ECHO.
 	IF EXIST X DEL X >NUL
-	
-
-
 
 REM Create var, icon and bin folders if they are not exists
 IF NOT EXIST "%APPDATA%\Artisan\var" MKDIR "%APPDATA%\Artisan\var"
 IF NOT EXIST "%APPDATA%\Artisan\bin" MKDIR "%APPDATA%\Artisan\bin"
 IF NOT EXIST "%APPDATA%\Artisan\icon" MKDIR "%APPDATA%\Artisan\icon"
-
-REM copy icon if they are not exists
-IF NOT EXIST "%APPDATA%\Artisan\icon\Laravel.ico" XCOPY "%~dp0icon\Laravel.ico" "%APPDATA%\Artisan\icon" > NUL
 
 REM A line break
 ECHO.
@@ -52,8 +42,8 @@ IF EXIST "%SYSTEMDRIVE%\xampp\php\php.exe" (
 	GOTO SkipGetPhpPath
 ) ELSE (
 	<NUL > X SET /p ".=."
-	CALL :SetColor 6F "WARNING: If you haven't installed PHP yet, It is recommended to install XAMPP package, You can download it from "
-	CALL :SetColor 1F "www.apachefriends.org"
+	CALL :SetColor 6F "WARNING: If you haven't installed PHP yet, It is recommended to install XAMPP package, You can download it from this website:"
+	CALL :SetColor 1F " apachefriends.org "
 	ECHO.
 	ECHO.
 	IF EXIST X DEL X >NUL
@@ -93,8 +83,8 @@ IF EXIST "%APPDATA%\Artisan\var\conemu.txt" (
 )
 
 <NUL > X SET /p ".=."
-	CALL :SetColor 6F "WARNING: Before this step you need to download and install Console Emulator from "
-	CALL :SetColor 1F "Http:ConEmu.github.io"
+	CALL :SetColor 6F "WARNING: Before this step you need to download and install Console Emulator from this website:"
+	CALL :SetColor 1F " ConEmu.github.io "
 	ECHO.
 	IF EXIST X DEL X >NUL
 :ReTypeTargetPath
@@ -121,17 +111,6 @@ IF NOT EXIST !CEEXE! (
 )
 :SkipGetConEmuPath
 
-REM Create art.bat if it's not already exists
-IF NOT EXIST "%APPDATA%\Artisan\bin\art.bat" (
-	ECHO ^@ECHO off > "%APPDATA%\Artisan\bin\art.bat" & ECHO. !PHP_Dir! artisan %%* >> "%APPDATA%\Artisan\bin\art.bat"
-	<NUL > X SET /p ".=."
-		CALL :SetColor 3F "INFO: From now on use 'art' instead of 'php artisan', For example: art route:list "
-		ECHO.
-		ECHO.
-		IF EXIST X DEL X >NUL
-	
-) 
-
 REM Create environment variable
 SET pathVars=%path%
 SET artPath=%SYSTEMDRIVE%\Users\Bisiv\AppData\Roaming\Artisan\bin
@@ -139,66 +118,37 @@ IF "x!pathVars:%artPath%=!"=="x%pathVars%" (
 	FLTMC >nul 2>&1 && (
 		REM REG add HKCU\Environment /v PATH /d "C:\Users\Bisiv\AppData\Roaming\Artisan\bin;%path%" /f
 		SETX PATH "%artPath%" /m >NUL 2>&1
+		IF NOT ERRORLEVEL 1 ( 
+			<NUL > X SET /p ".=."
+			CALL :SetColor 2F "SUCCESS: Environment variable has been installed successfully."
+			IF EXIST X DEL X >NUL
+			ECHO.
+			ECHO.
+		)
 	) || (
 		<NUL > X SET /p ".=."
-		CALL :SetColor 4F "ERROR: Access is denied, Can't add environment variable, Please right click on Setup file and select Run as administrator..."
+		CALL :SetColor 4F "ERROR: Access is denied, couldn't add environment variable, Please right click on Setup file and select Run as administrator..."
+		ECHO.
 		ECHO.
 		IF EXIST X DEL X >NUL
 		PAUSE
 		EXIT /b
 	)
 )
-FOR %%i IN ("!TargetPath!") DO ( 
-		SET CEXML=%%~di%%~piConEmu.xml
-		SET CXPath=%%~di%%~pi
+
+REM copy icon if it does not already exists
+IF NOT EXIST "%APPDATA%\Artisan\icon\Laravel.ico" (
+	XCOPY "%~dp0icon\Laravel.ico" "%APPDATA%\Artisan\icon" > NUL
+	IF NOT ERRORLEVEL 1 ( 
+		<NUL > X SET /p ".=."
+		CALL :SetColor 2F "SUCCESS: Icon has been installed successfully."
+		IF EXIST X DEL X >NUL
+		ECHO.
+		ECHO.
 	)
-IF EXIST !CEEXE! (
-	IF EXIST !CEXML! (
-		SET commentTemp=*       Created by: M.Rakhisi                  *
-		FOR /f "skip=4 tokens=* delims=" %%G IN (!CEXML!) DO IF NOT DEFINED cmt SET "cmt=%%G"
-		IF !cmt!==!commentTemp! ( 
-			GOTO SkipCopyConEmuXML 
-		) ELSE (
-			<NUL > X SET /p ".=."
-			CALL :SetColor 0F "Your Console Emulator doesn't have custom settings, May I copy them [Y,N]?"
-			IF EXIST X DEL X >NUL
-			CHOICE /N /M ""
-			IF ERRORLEVEL 2 GOTO CopyNotConfirmed
-			IF ERRORLEVEL 1 GOTO CopyConfirmed
-	
-			:CopyConfirmed
-			REN "!CEXML!" "ConEmu.xml.bak"
-			IF NOT ERRORLEVEL 1 ( 
-				XCOPY "%~dp0settings\ConEmu.xml" "!CXPath!" > NUL 
-				ECHO.
-				<NUL > X SET /p ".=."
-				CALL :SetColor 2F "SUCCESS: The Settings have been copied successfully."
-				IF EXIST X DEL X >NUL
-				ECHO.
-				ECHO.
-			)
-			GOTO SkipCopyConEmuXML
-			:CopyNotConfirmed
-			ECHO.
-			<NUL > X SET /p ".=."
-			CALL :SetColor 4F "Nothing copied."
-			IF EXIST X DEL X >NUL
-			ECHO.
-			ECHO.
-			GOTO SkipCopyConEmuXML
-		)
-	) ELSE ( 
-		IF NOT ERRORLEVEL 1 ( 
-			XCOPY "%~dp0settings\ConEmu.xml" "!CXPath!" > NUL
-			<NUL > X SET /p ".=."
-			CALL :SetColor 2F "SUCCESS: The settings file has been copied successfully."
-			IF EXIST X DEL X >NUL
-			ECHO.
-			ECHO.
-		)
-	)
-)
-:SkipCopyConEmuXML
+) 
+
+REM copy fonts and register it on Registry
 REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Source Code Pro Semibold (TrueType)" >NUL 2>&1
 IF %ERRORLEVEL% == 1 (
 	FLTMC >NUL 2>&1 && (
@@ -211,7 +161,7 @@ IF %ERRORLEVEL% == 1 (
 		
 		IF NOT ERRORLEVEL 1 ( 
 			<NUL > X SET /p ".=."
-			CALL :SetColor 2F "SUCCESS: The Font has been copied successfully."
+			CALL :SetColor 2F "SUCCESS: Fonts have been installed successfully."
 			IF EXIST X DEL X >NUL
 			ECHO.
 			ECHO.
@@ -219,7 +169,7 @@ IF %ERRORLEVEL% == 1 (
 		
 	) || (
 		<NUL > X SET /p ".=."
-		CALL :SetColor 4F "ERROR: Access is denied, Can't set font in Registry, Please right click on Setup file and select Run as administrator..."
+		CALL :SetColor 4F "ERROR: Access is denied, couldn't set font in Registry, Please right click on Setup file and select Run as administrator..."
 		ECHO.
 		ECHO.
 		IF EXIST X DEL X >NUL
@@ -227,6 +177,78 @@ IF %ERRORLEVEL% == 1 (
 		EXIT /b
 	)
 ) 
+
+
+FOR %%i IN ("!TargetPath!") DO ( 
+		SET CEXML=%%~di%%~piConEmu.xml
+		SET CXPath=%%~di%%~pi
+	)
+IF EXIST !CEEXE! (
+	IF EXIST !CEXML! (
+		SET commentTemp=*       Created by: M.Rakhisi                  *
+		FOR /f "skip=4 tokens=* delims=" %%G IN (!CEXML!) DO IF NOT DEFINED cmt SET "cmt=%%G"
+		IF !cmt!==!commentTemp! ( 
+			GOTO SkipCopyConEmuXML 
+		) ELSE (
+			<NUL > X SET /p ".=."
+			CALL :SetColor 0F "Your Console Emulator doesn't have custom settings, May I install them [Y,N]?"
+			IF EXIST X DEL X >NUL
+			CHOICE /N /M ""
+			IF ERRORLEVEL 2 GOTO CopyNotConfirmed
+			IF ERRORLEVEL 1 GOTO CopyConfirmed
+	
+			:CopyConfirmed
+			REN "!CEXML!" "ConEmu.xml.bak"
+			IF NOT ERRORLEVEL 1 ( 
+				XCOPY "%~dp0settings\ConEmu.xml" "!CXPath!" > NUL 
+				ECHO.
+				<NUL > X SET /p ".=."
+				CALL :SetColor 2F "SUCCESS: The Settings have been installed successfully."
+				IF EXIST X DEL X >NUL
+				ECHO.
+				ECHO.
+			)
+			GOTO SkipCopyConEmuXML
+			:CopyNotConfirmed
+			ECHO.
+			<NUL > X SET /p ".=."
+			CALL :SetColor 4F "Settings have not installed."
+			IF EXIST X DEL X >NUL
+			ECHO.
+			ECHO.
+			GOTO SkipCopyConEmuXML
+		)
+	) ELSE ( 
+		IF NOT ERRORLEVEL 1 ( 
+			XCOPY "%~dp0settings\ConEmu.xml" "!CXPath!" > NUL
+			<NUL > X SET /p ".=."
+			CALL :SetColor 2F "SUCCESS: The settings have been installed successfully."
+			IF EXIST X DEL X >NUL
+			ECHO.
+			ECHO.
+		)
+	)
+)
+:SkipCopyConEmuXML
+
+REM Create art.bat if it's not already exists
+IF NOT EXIST "%APPDATA%\Artisan\bin\art.bat" (
+	ECHO ^@ECHO off > "%APPDATA%\Artisan\bin\art.bat" & ECHO. !PHP_Dir! artisan %%* >> "%APPDATA%\Artisan\bin\art.bat"	
+	IF NOT ERRORLEVEL 1 ( 
+		<NUL > X SET /p ".=."
+		CALL :SetColor 2F "SUCCESS: art command has been installed successfully."
+		IF EXIST X DEL X >NUL
+		ECHO.
+		ECHO.
+		<NUL > X SET /p ".=."
+		CALL :SetColor 3F "INFO: From now on use 'art' instead of 'php artisan', For example: art route:list "
+		ECHO.
+		ECHO.
+		IF EXIST X DEL X >NUL
+	)
+	
+) 
+
 SET /p LinkName="Enter the name of your Laravel project(For example: Blog):"
 ECHO.
 :ReTypeProjectPath
@@ -241,9 +263,20 @@ IF NOT EXIST !projectPath!\artisan (
 	GOTO ReTypeProjectPath
 )
 
+REM Install a shortcut on the Desktop
 SET linkDest=%%HOMEDRIVE%%%%HOMEPATH%%\Desktop\!LinkName!.lnk
+SET linkRealDest=%HOMEDRIVE%%HOMEPATH%\Desktop\!LinkName!.lnk
 SET linkArgs=-Max -Title ""!LinkName! ^<Artisan^>"" -Icon ""%APPDATA%\Artisan\icon\laravel.ico"" -cmd cmd -cur_console:C:""%APPDATA%\Artisan\icon\laravel.ico"" /k cd ""!projectPath!"" ^& prompt $G$G
 SET linkIconLoc=%APPDATA%\Artisan\icon\laravel.ico
+
+	<NUL > X SET /p ".=."
+	CALL :SetColor 0F "Do you want a link to the Artisan of your Laravel project on the Desktop[Y,N]?"
+	IF EXIST X DEL X >NUL
+	CHOICE /N /M ""
+	IF ERRORLEVEL 2 GOTO DontInstallLinkOnDesktop
+	IF ERRORLEVEL 1 GOTO InstallLinkOnDesktop
+
+:InstallLinkOnDesktop
 SET CS=CreateShortcut.vbs
 (
 	(
@@ -258,14 +291,59 @@ SET CS=CreateShortcut.vbs
 	CSCRIPT //nologo .\!CS!
 	DEL !CS! /f /q
 )
+
 IF NOT ERRORLEVEL 1 ( 
-	<NUL > X SET /p ".=."
-		CALL :SetColor 2F "SUCCESS: A link to Artisan of "!LinkName!" project has been successfully copied on the Desktop."
+		<NUL > X SET /p ".=."
+		ECHO.
+		CALL :SetColor 2F "SUCCESS: A link to Artisan of "!LinkName!" project has been successfully installed on the Desktop."
 		IF EXIST X DEL X >NUL
 		ECHO.
-		ECHO.
-		PAUSE
-)		
+)
+:DontInstallLinkOnDesktop
+
+REM Install a shortcut on the Taskbar
+
+	<NUL > X SET /p ".=."
+	ECHO.
+	CALL :SetColor 0F "Do you want a link to the Artisan of your Laravel project on the Taskbar[Y,N]?"
+	IF EXIST X DEL X >NUL
+	CHOICE /N /M ""
+	ECHO.
+	IF ERRORLEVEL 2 GOTO DontInstallLinkOnTaskbar
+	IF ERRORLEVEL 1 GOTO InstallLinkOnTaskbar
+
+:InstallLinkOnTaskbar
+
+IF EXIST !linkRealDest! (
+	%~dp0pin\pin.dll /PTFOL:"%HOMEDRIVE%%HOMEPATH%\Desktop" /PTFILE:"!LinkName!.lnk" >NUL 2>&1
+) ELSE (
+	SET CS=CreateShortcut.vbs
+	(
+		(
+			ECHO Set WS = WScript.CreateObject^("WScript.Shell"^) 
+			ECHO lnkFile = WS.ExpandEnvironmentStrings^("%TEMP%\!LinkName!.lnk"^)
+			ECHO Set lnk = WS.CreateShortcut^(lnkFile^) 
+			ECHO lnk.TargetPath = WS.ExpandEnvironmentStrings^("!CEEXE!"^)
+			ECHO lnk.Arguments = WS.ExpandEnvironmentStrings^("!linkArgs!"^)
+			ECHO lnk.IconLocation = WS.ExpandEnvironmentStrings^("!linkIconLoc!"^)
+			ECHO lnk.Save
+		)1>!CS!
+		CSCRIPT //nologo .\!CS!
+		DEL !CS! /f /q 
+	)
+	%~dp0pin\pin.dll /PTFOL:"%TEMP%" /PTFILE:"!LinkName!.lnk" >NUL 2>&1
+	DEL "%TEMP%\!LinkName!.lnk" >NUL 2>&1
+)
+	<NUL > X SET /p ".=."
+	CALL :SetColor 2F "SUCCESS: A link to Artisan of "!LinkName!" project has been successfully installed on the Taskbar."
+	IF EXIST X DEL X >NUL
+	ECHO.
+	ECHO.
+Pause
+:DontInstallLinkOnTaskbar
+
+
+REM Set Color Function
 :SetColor
 SET "param=^%~2" !
 SET "param=!param:"=\"!"
