@@ -10,8 +10,11 @@ REM *       Date: 19/6/2016                        *
 REM *                                              *
 REM ************************************************
 
-
- 
+REM Open maximized window
+IF NOT "%1" == "max" (
+	START /MAX CMD /c %0 max
+	EXIT /b
+)
 
 REM Set color inot bright white
 COLOR F
