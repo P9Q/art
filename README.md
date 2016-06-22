@@ -25,10 +25,12 @@ This Setup installs shortcuts for Laravel Artisan to facilitate its utilization.
  >After passing the steps a link will install on your Desktop and Taskbar, through this link you can access the Artisan of your Laravel project easier.
  
  ![desktop](https://cloud.githubusercontent.com/assets/20019720/16180464/6a15c9c6-369a-11e6-9ad8-eb31a78e38bd.jpg)        ![taskbar](https://cloud.githubusercontent.com/assets/20019720/16228048/c7f3dfbc-37c9-11e6-8fcc-65d72018dd52.jpg)
- 
+
+>**Note:** **If** you can't see the font properly, **Reboot** your system, for later use it's not required.
+
 >**Note:** Notice that just once you need to run it as administrator, for later use you can simply dobule click on it.
 
->**Note:** Most of these steps are asked only once, for later use you only need to enter project Name and Directory.
+>**Note:** Most of these steps are asked only once, for later use you only need to enter project **Name** and **Directory**.
 
 >**Note:** You can install many different links to your all Laravel projects not just a one.
 
