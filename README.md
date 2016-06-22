@@ -36,5 +36,6 @@ This Setup installs shortcuts for Laravel Artisan to facilitate its utilization.
 
 >**Note:** After the installation you can use just **art** instead of **PHP Artisan**, for example: **'art route:list'** instead of **'PHP Artisan route:list'**.
 
+
 ######Hope you enjoy using it
  
