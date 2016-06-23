@@ -6,11 +6,11 @@ This Setup installs shortcuts for Laravel Artisan to facilitate its utilization.
 
 ##Installation
 
-**1.** First install PHP, It is recommended to install XAMPP package, You can download it from [XAMPP website](http://apachefriends.org/).
+**1.** First install **PHP**, It is recommended to install **XAMPP** package, You can download it from [XAMPP website](http://apachefriends.org/).
 
-**2.** It is required to download Console Emulator, download the lastest version from [ConEmu website](http://conemu.github.io/).
+**2.** It is required to download **Console Emulator**, download the lastest version from [ConEmu website](http://conemu.github.io/).
 
-**3**. Now you need to install Laravel, If you don't know how to do it check [Laravel website](https://laravel.com/docs).
+**3**. Now you need to install **Laravel**, If you don't know how to do it, check [Laravel website](https://laravel.com/docs).
 
 **4.** Now you can install the project, download and extract the zip file of the repository wherever you want.
 
@@ -22,7 +22,7 @@ This Setup installs shortcuts for Laravel Artisan to facilitate its utilization.
  
  ![art](https://cloud.githubusercontent.com/assets/20019720/16249029/78e356dc-3828-11e6-8ce5-c10035d2b4f5.jpg)
  
- >After passing the steps a link will install on your Desktop and Taskbar, through this link you can access the Artisan of your Laravel project easier.
+ >After passing the steps a link will install on your **Desktop** and **Taskbar**, through this link you can access the Artisan of your Laravel project easier.
  
  ![desktop](https://cloud.githubusercontent.com/assets/20019720/16180464/6a15c9c6-369a-11e6-9ad8-eb31a78e38bd.jpg)        ![taskbar](https://cloud.githubusercontent.com/assets/20019720/16228048/c7f3dfbc-37c9-11e6-8fcc-65d72018dd52.jpg)
 
