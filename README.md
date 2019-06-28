@@ -1,4 +1,4 @@
-                                                  In the Name of God
+
 #Windows Laravel Artisan Shortener
 This Setup installs shortcuts for Laravel Artisan to facilitate its utilization.
 
